@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบลงเวลาการทำงาน</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('christmas-bg.jpg') no-repeat center center/cover;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 300px;
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 100px;
+            height: auto;
+        }
+        .time {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button {
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f44336;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #d32f2f;
+        }
+        .summary {
+            display: none;
+        }
+        .summary .message {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container main-screen">
+        <div class="logo">
+            <img src="logo.png" alt="Company Logo">
+        </div>
+        <div class="time" id="current-time">08:15 AM</div>
+        <div class="input-group">
+            <label for="employee-id">กรอกรหัสพนักงาน</label>
+            <input type="text" id="employee-id" placeholder="รหัสพนักงาน">
+        </div>
+        <div class="buttons">
+            <button onclick="logTime()">ลงเวลา</button>
+            <button onclick="goBack()">ย้อนกลับ</button>
+        </div>
+    </div>
+
+    <div class="container summary">
+        <div class="time" id="summary-time">08:15 AM</div>
+        <div class="message">ยืนยันการลงเวลา</div>
+        <div class="employee-id" id="summary-employee-id">&lt;employee_id&gt;</div>
+        <button onclick="goBackToMain()">กลับสู่หน้าหลัก</button>
+    </div>
+
+    <script>
+        // อัปเดตเวลาเรียลไทม์
+        function updateTime() {
+            const timeElement = document.getElementById('current-time');
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const formattedTime = `${hours > 12 ? hours - 12 : hours}:${minutes} ${period}`;
+            timeElement.textContent = formattedTime;
+        }
+
+        setInterval(updateTime, 1000); // อัปเดตทุก 1 วินาที
+        updateTime();
+
+        function logTime() {
+            const employeeId = document.getElementById('employee-id').value;
+            if (employeeId) {
+                const currentTime = document.getElementById('current-time').textContent;
+
+                // แสดงหน้าสรุปผล
+                document.querySelector('.main-screen').style.display = 'none';
+                document.querySelector('.summary').style.display = 'block';
+                document.getElementById('summary-time').textContent = currentTime;
+                document.getElementById('summary-employee-id').textContent = employeeId;
+            } else {
+                alert('กรุณากรอกรหัสพนักงาน');
+            }
+        }
+
+        function goBack() {
+            alert('กลับไปหน้าก่อนหน้า');
+        }
+
+        function goBackToMain() {
+            document.querySelector('.summary').style.display = 'none';
+            document.querySelector('.main-screen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
